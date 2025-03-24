@@ -5,7 +5,7 @@ app = Flask(__name__)
 
 # Initialize the database
 def init_db():
-    conn = sqlite3.connect('example.db')
+    conn = sqlite3.connect(':memory:')
     c = conn.cursor()
     c.execute('''CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY, name TEXT)''')
     conn.commit()
@@ -16,7 +16,7 @@ def init_db():
 def home():
     if request.method == 'POST':
         user_name = request.form['name']
-        conn = sqlite3.connect('example.db')
+        conn = sqlite3.connect(':memory:')
         c = conn.cursor()
         c.execute("INSERT INTO users (name) VALUES (?)", (user_name,))
         conn.commit()
@@ -24,7 +24,7 @@ def home():
         return f"User {user_name} added successfully!"
     
     # Fetch all users from the database
-    conn = sqlite3.connect('example.db')
+    conn = sqlite3.connect(':memory:')
     c = conn.cursor()
     c.execute("SELECT * FROM users")
     users = c.fetchall()
